@@ -6,24 +6,13 @@
         <!-- 用户名 -->
         <div class="form-group">
           <label>用户名</label>
-          <input 
-            type="text"
-            v-model="username"
-            placeholder="请输入用户名"
-            required
-          />
+          <input type="text" v-model="username" placeholder="请输入用户名" required />
         </div>
 
         <!-- 密码 -->
         <div class="form-group">
           <label>密码</label>
-          <input 
-            type="password"
-            v-model="password"
-            placeholder="请输入密码"
-            required
-            minlength="6"
-          />
+          <input type="password" v-model="password" placeholder="请输入密码" required minlength="6" />
         </div>
 
         <!-- 错误提示 -->
@@ -50,30 +39,63 @@ const password = ref('')
 const errorMessage = ref('')
 const isLoading = ref(false)
 
-const handleLogin = () => {
-  // 简单表单验证
+
+
+import axios from 'axios' // 需要先安装 axios: npm install axios
+const handleLogin = async () => {
+  // 表单验证
   if (!username.value || !password.value) {
     errorMessage.value = '请填写所有字段'
     return
   }
 
-  // 模拟 API 请求
-  isLoading.value = true
-  errorMessage.value = ''
+  try {
+    isLoading.value = true
+    errorMessage.value = ''
 
-  setTimeout(() => {
-    // 这里应该调用真实的后端接口
-    if (username.value === 'admin' && password.value === '123456') {
-      // 登录成功，存储 token（实际应使用 Vuex/Pinia）
-      localStorage.setItem('authToken', 'demo-token')
-      router.push('/') // 需要先创建 dashboard 页面
-    } else {
-      errorMessage.value = '用户名或密码错误'
+    // 调用真实登录接口
+    const response = await axios.post('/auth/login', {
+      accountNumber: username.value,  // 根据后端DTO字段命名
+      password: password.value
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    // 处理登录成功
+    if (response.data && response.data.token) {
+      localStorage.setItem('authToken', response.data.token)
+      router.push('/dashboard') // 跳转到主页
     }
+  } catch (error) {
+    // 错误处理
+    if (error.response) {
+      // 服务器返回4xx/5xx响应
+      errorMessage.value = error.response.data.message || '登录失败，请检查凭证'
+    } else if (error.request) {
+      // 请求已发出但没有响应
+      errorMessage.value = '服务器无响应，请检查网络连接'
+    } else {
+      // 其他错误
+      errorMessage.value = '请求发送失败：' + error.message
+    }
+  } finally {
     isLoading.value = false
-  }, 1000)
+  }
+}
+
+// 可选：注册函数
+const handleRegister = async (registerData) => {
+  try {
+    const response = await axios.post('/auth/register', registerData)
+    return response.data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || '注册失败')
+  }
 }
 </script>
+
 
 <style scoped>
 .login-container {
@@ -88,7 +110,7 @@ const handleLogin = () => {
   background: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 350px;
 }
 
