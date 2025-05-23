@@ -16,11 +16,13 @@ import java.lang.reflect.ParameterizedType;
 /**
  * @Author WangYi
  */
-public class BaseExtController<T extends BaseEntity, E extends BaseDTO, S extends BaseService<T>> extends BaseController<T, S> {
+public class BaseExtController<T extends BaseEntity, E extends BaseDTO, S extends BaseService<T>>
+		extends BaseController<T, S> {
 	@PostMapping("/save")
 	@Operation(summary = "新增", description = "传入新增对象")
 	public Boolean save(@Valid @RequestBody E dto) {
-		T entity = ReflectUtil.newInstance(((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName());
+		T entity = ReflectUtil.newInstance(
+				((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName());
 		BeanUtil.copyProperties(dto, entity);
 		return service.save(entity);
 	}
@@ -28,11 +30,10 @@ public class BaseExtController<T extends BaseEntity, E extends BaseDTO, S extend
 	@PostMapping("/update")
 	@Operation(summary = "修改", description = "传入修改对象")
 	public Boolean update(@Valid @RequestBody E dto) {
-		T entity = ReflectUtil.newInstance(((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName());
+		T entity = ReflectUtil.newInstance(
+				((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName());
 		BeanUtil.copyProperties(dto, entity);
 		return service.updateById(entity);
 	}
-
-
 
 }
