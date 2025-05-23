@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,10 @@ public class LoginController {
     public Boolean register(@Valid @RequestBody RegisterDTO dto) {
         return userService.register(dto);
     }
+
+    @GetMapping("/")
+    public String health() {
+        return "OK";
+    }
+
 }
-
-

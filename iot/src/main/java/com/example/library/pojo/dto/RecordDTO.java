@@ -6,22 +6,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.sql.Date;
+
 /**
  * @author: zyh
-
+ * 
  * @version: v1.0.0
-
+ * 
  */
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class RecordDTO extends BaseDTO {
     @NotBlank(message = "用户名不能为空")
-    String user_name;
+    private String userName;
+
     @NotBlank(message = "设备名不能为空")
-    String device_name;
+    private String deviceName;
 
-    Date borrow_time;
-    Date return_time;
-
+    private Date borrowTime;
+    private Date returnTime;
 }

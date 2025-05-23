@@ -55,7 +55,7 @@ const handleLogin = async () => {
 
     // 调用真实登录接口
     const response = await axios.post('/auth/login', {
-      accountNumber: username.value,  // 根据后端DTO字段命名
+      account: username.value,  // 根据后端DTO字段命名
       password: password.value
     }, {
       headers: {
