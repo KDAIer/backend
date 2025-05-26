@@ -156,6 +156,9 @@ const setCustomTimer = () => {
 </script>
 
 <style scoped>
+@import '/src/assets/base.css';
+
+
 .flat-air-control {
   background: white;
   border-radius: 12px;
@@ -253,10 +256,11 @@ const setCustomTimer = () => {
   padding: 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
-  background: white;
+  background: var(--color-device-card-bg);
   cursor: pointer;
   transition: all 0.2s;
   text-align: center;
+  color: var(--text-color);
 }
 
 .mode-btn:hover {
@@ -265,7 +269,7 @@ const setCustomTimer = () => {
 
 .mode-btn.active {
   border-color: #3182ce;
-  background: #e3f2fd;
+  background: rgb(49, 130, 206, 0.1);
 }
 
 .mode-icon {
@@ -273,13 +277,18 @@ const setCustomTimer = () => {
   display: block;
   margin-bottom: 0.5rem;
 }
+.mode-name {
+  font-size: 1rem;
+  color: var(--text-color);
+}
 
 /* 设备选择器样式 */
 .device-selector {
   margin-bottom: 1.5rem;
   padding: 0.5rem;
-  background: #f5f5f5;
+  background: var(--color-device-card-bg);
   border-radius: 8px;
+
 }
 
 .device-selector select {
